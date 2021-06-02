@@ -21,7 +21,7 @@ const connectToDb = (cb) => {
     cb(db);
   });
 };
-
+// get all accounts
 app.get("/accounts", (req, res) => {
   connectToDb(async (db) => {
     const collection = db.collection("accounts");
@@ -29,7 +29,7 @@ app.get("/accounts", (req, res) => {
     res.json(data);
   });
 });
-
+//get individual account
 app.get("/accounts/:id", (req, res) => {
   const idToFind = ObjectId(req.params.id);
   connectToDb(async (db) => {
@@ -38,7 +38,7 @@ app.get("/accounts/:id", (req, res) => {
     res.json(data);
   });
 });
-
+//create new account
 app.post("/accounts", (req, res) => {
   const newAccount = {
     name: req.body.name,
@@ -62,9 +62,27 @@ app.post("/accounts", (req, res) => {
     res.sendStatus(500);
   }
 });
-
-app.put("/accounts/:id/moneyin", (req, res) => {});
-app.put("/accounts/:id/moneyout", (req, res) => {});
+//add to account
+app.put("/accounts/:id/deposit/:deposit", (req, res) => {
+  const idToFind = ObjectId(req.params.id);
+  const deposit = Number(req.params.deposit);
+  console.log(req.params.deposit);
+  connectToDb(async (db) => {
+    const collection = db.collection("accounts");
+    const result = await collection.updateOne(
+      { _id: idToFind },
+      { $inc: { balance: deposit } }
+    );
+    if (result.modifiedCount === 1) {
+      res.send("done");
+    } else {
+      res.send("fail");
+    }
+  });
+});
+//deduct from account
+app.put("/accounts/:id/withdraw", (req, res) => {});
+//delete account
 app.delete("/accounts/:id", (req, res) => {});
 
 app.listen(port);
