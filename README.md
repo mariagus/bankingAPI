@@ -52,9 +52,25 @@ Returns the specific account associated with a unique id
 
 ### POST
 
-Creates a new account
+Creates a new bank account
 
 | Param   | Description               |
 | ------- | ------------------------- |
 | name    | Account holder's name     |
 | balance | Current amount on account |
+
+| POST /accounts |
+| -------------- |
+
+```
+{
+    "success": true,
+    "message": "new account saved",
+    "status": 200,
+    "data": {
+        "name": "Tina Buj",
+        "balance": "23432",
+        "_id": "60b7aa4d2a1f9740289a9dff"
+    }
+}
+```
