@@ -62,11 +62,11 @@ app.post("/accounts", (req, res) => {
     res.sendStatus(500);
   }
 });
-//add to account
+//deposit to account
 app.put("/accounts/:id/deposit/:deposit", (req, res) => {
   const idToFind = ObjectId(req.params.id);
   const deposit = Number(req.params.deposit);
-  console.log(req.params.deposit);
+
   connectToDb(async (db) => {
     const collection = db.collection("accounts");
     const result = await collection.updateOne(
@@ -80,11 +80,11 @@ app.put("/accounts/:id/deposit/:deposit", (req, res) => {
     }
   });
 });
-//deduct from account
+//withdraw from account
 app.put("/accounts/:id/withdraw/:withdraw", (req, res) => {
   const idToFind = ObjectId(req.params.id);
   const withdraw = Number("-" + req.params.withdraw);
-  console.log(req.params.withdraw);
+
   connectToDb(async (db) => {
     const collection = db.collection("accounts");
     const result = await collection.updateOne(
