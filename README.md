@@ -39,3 +39,13 @@ Returns all accounts held by the Bank
 | ----------------- |
 
 Returns the specific account associated with a unique id
+
+```
+[
+    {
+        "_id": "60b79ba84264f03b8fd8e7f2",
+        "name": "Lilly Flower",
+        "balance": "503432.11"
+    }
+]
+```
