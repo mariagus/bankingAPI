@@ -40,21 +40,21 @@ app.get("/accounts/:id", (req, res) => {
 });
 
 app.post("/accounts", (req, res) => {
-  const dataToSave = {
+  const newAccount = {
     name: req.body.name,
     balance: req.body.balance,
   };
-  if (dataToSave.name && dataToSave.balance) {
+  if (newAccount.name && newAccount.balance) {
     connectToDb(async (db) => {
       const collection = db.collection("accounts");
-      const result = await collection.insertOne(dataToSave);
+      const result = await collection.insertOne(newAccount);
 
       if (result.insertedCount === 1) {
         res.send({
           success: true,
           message: "new account saved",
           status: 200,
-          data: dataToSave,
+          data: newAccount,
         });
       }
     });
@@ -62,5 +62,9 @@ app.post("/accounts", (req, res) => {
     res.sendStatus(500);
   }
 });
+
+app.put("/accounts/:id/moneyin", (req, res) => {});
+app.put("/accounts/:id/moneyout", (req, res) => {});
+app.delete("/accounts/:id", (req, res) => {});
 
 app.listen(port);
