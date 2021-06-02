@@ -44,16 +44,23 @@ app.post("/accounts", (req, res) => {
     name: req.body.name,
     balance: req.body.balance,
   };
-  connectToDb(async (db) => {
-    const collection = db.collection("accounts");
-    const result = await collection.insertOne(dataToSave);
+  if (dataToSave.name && dataToSave.balance) {
+    connectToDb(async (db) => {
+      const collection = db.collection("accounts");
+      const result = await collection.insertOne(dataToSave);
 
-    if (result.insertedCount === 1) {
-      res.send("account added");
-    } else {
-      res.send("fail");
-    }
-  });
+      if (result.insertedCount === 1) {
+        res.send({
+          success: true,
+          message: "new account saved",
+          status: 200,
+          data: dataToSave,
+        });
+      }
+    });
+  } else {
+    res.sendStatus(500);
+  }
 });
 
 app.listen(port);
