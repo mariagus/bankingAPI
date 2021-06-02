@@ -81,7 +81,23 @@ app.put("/accounts/:id/deposit/:deposit", (req, res) => {
   });
 });
 //deduct from account
-app.put("/accounts/:id/withdraw", (req, res) => {});
+app.put("/accounts/:id/withdraw/:withdraw", (req, res) => {
+  const idToFind = ObjectId(req.params.id);
+  const withdraw = Number("-" + req.params.withdraw);
+  console.log(req.params.withdraw);
+  connectToDb(async (db) => {
+    const collection = db.collection("accounts");
+    const result = await collection.updateOne(
+      { _id: idToFind },
+      { $inc: { balance: withdraw } }
+    );
+    if (result.modifiedCount === 1) {
+      res.send("done");
+    } else {
+      res.send("fail");
+    }
+  });
+});
 //delete account
 app.delete("/accounts/:id", (req, res) => {});
 
