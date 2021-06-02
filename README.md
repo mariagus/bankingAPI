@@ -49,3 +49,12 @@ Returns the specific account associated with a unique id
     }
 ]
 ```
+
+### POST
+
+Creates a new account
+
+| Param   | Description               |
+| ------- | ------------------------- |
+| name    | Account holder's name     |
+| balance | Current amount on account |
