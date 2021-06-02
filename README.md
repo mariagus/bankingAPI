@@ -16,13 +16,23 @@ Returns a list of accounts held by the Bank
 Returns all accounts held by the Bank
 
 ```
-app.get("/accounts", (req, res) => {
-  connectToDb(async (db) => {
-    const collection = db.collection("accounts");
-    const data = await collection.find({}).toArray();
-    res.json(data);
-  });
-});
+[
+    {
+        "_id": "60b79a7bc051077722d30b3d",
+        "name": "Mary Bell",
+        "balance": "450.55"
+    },
+    {
+        "_id": "60b79ac0c051077722d30b3e",
+        "name": "Tim Gogol",
+        "balance": "67.34"
+    },
+    {
+        "_id": "60b79ba84264f03b8fd8e7f2",
+        "name": "Lilly Flower",
+        "balance": "503432.11"
+    }
+]
 ```
 
 | GET /accounts/:id |
