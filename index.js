@@ -63,9 +63,9 @@ app.post("/accounts", (req, res) => {
   }
 });
 //deposit to account
-app.put("/accounts/:id/deposit/:deposit", (req, res) => {
+app.put("/accounts/:id/deposit", (req, res) => {
   const idToFind = ObjectId(req.params.id);
-  const deposit = Number(req.params.deposit);
+  const deposit = req.body.deposit;
 
   connectToDb(async (db) => {
     const collection = db.collection("accounts");
@@ -81,15 +81,15 @@ app.put("/accounts/:id/deposit/:deposit", (req, res) => {
   });
 });
 //withdraw from account
-app.put("/accounts/:id/withdraw/:withdraw", (req, res) => {
+app.put("/accounts/:id/withdraw", (req, res) => {
   const idToFind = ObjectId(req.params.id);
-  const withdraw = Number("-" + req.params.withdraw);
+  const withdraw = req.body.withdraw;
 
   connectToDb(async (db) => {
     const collection = db.collection("accounts");
     const result = await collection.updateOne(
       { _id: idToFind },
-      { $inc: { balance: withdraw } }
+      { $inc: { balance: -withdraw } }
     );
     if (result.modifiedCount === 1) {
       res.send("done");
