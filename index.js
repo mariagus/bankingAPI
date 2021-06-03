@@ -1,7 +1,7 @@
 const express = require("express");
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
-const mathjs = require("mathjs");
+const round = require("mathjs").round;
 
 const app = express();
 const port = 5000;
@@ -43,25 +43,24 @@ app.get("/accounts/:id", (req, res) => {
 app.post("/accounts", (req, res) => {
   const newAccount = {
     name: req.body.name,
-    balance: req.body.balance,
+    balance: round(req.body.balance, 2),
   };
-  if (newAccount.name && newAccount.balance) {
-    connectToDb(async (db) => {
-      const collection = db.collection("accounts");
-      const result = await collection.insertOne(newAccount);
-
-      if (result.insertedCount === 1) {
-        res.send({
-          success: true,
-          message: "new account saved",
-          status: 200,
-          data: newAccount,
-        });
-      }
-    });
-  } else {
-    res.sendStatus(500);
+  if (!newAccount.name || !newAccount.balance) {
+    return res.send("fail!");
   }
+  connectToDb(async (db) => {
+    const collection = db.collection("accounts");
+    const result = await collection.insertOne(newAccount);
+
+    if (result.insertedCount === 1) {
+      return res.send({
+        success: true,
+        message: "new account saved",
+        status: 200,
+        data: newAccount,
+      });
+    }
+  });
 });
 //deposit to account
 app.put("/accounts/:id/deposit", (req, res) => {
@@ -75,9 +74,9 @@ app.put("/accounts/:id/deposit", (req, res) => {
       { $inc: { balance: deposit } }
     );
     if (result.modifiedCount === 1) {
-      res.send("done");
+      return res.send("done");
     } else {
-      res.send("fail");
+      return res.send("fail");
     }
   });
 });
@@ -90,16 +89,26 @@ app.put("/accounts/:id/withdraw", (req, res) => {
     const collection = db.collection("accounts");
     const result = await collection.updateOne(
       { _id: idToFind },
-      { $inc: { balance: mathjs.round(-withdraw, 2) } }
+      { $inc: { balance: round(-withdraw, 2) } }
     );
     if (result.modifiedCount === 1) {
-      res.send("done");
+      return res.send("done");
     } else {
-      res.send("fail");
+      return res.send("fail");
     }
   });
 });
 //delete account
-app.delete("/accounts/:id", (req, res) => {});
+app.delete("/accounts/:id", (req, res) => {
+  const idToDelete = ObjectId(req.params.id);
+
+  connectToDb(async (db) => {
+    const collection = db.collection("accounts");
+    const result = await collection.deleteOne({
+      _id: idToDelete,
+    });
+    return res.send("deleted");
+  });
+});
 
 app.listen(port);
