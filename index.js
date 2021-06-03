@@ -1,6 +1,7 @@
 const express = require("express");
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
+const mathjs = require("mathjs");
 
 const app = express();
 const port = 5000;
@@ -89,7 +90,7 @@ app.put("/accounts/:id/withdraw", (req, res) => {
     const collection = db.collection("accounts");
     const result = await collection.updateOne(
       { _id: idToFind },
-      { $inc: { balance: -withdraw } }
+      { $inc: { balance: mathjs.round(-withdraw, 2) } }
     );
     if (result.modifiedCount === 1) {
       res.send("done");
