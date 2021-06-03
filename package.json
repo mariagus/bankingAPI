@@ -18,6 +18,7 @@
   "homepage": "https://github.com/mariagus/bankingAPI#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "mathjs": "^9.4.1",
     "mongodb": "^3.6.9"
   }
 }
