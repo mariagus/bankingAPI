@@ -1,17 +1,15 @@
 const unsuccessful = () => {
   return {
     success: false,
-    message: "",
+    message: "failed",
     status: 404,
-    data: [],
   };
 };
 const successful = () => {
   return {
     success: true,
-    message: "",
+    message: "success",
     status: 200,
-    data: [],
   };
 };
 module.exports.unsuccessful = unsuccessful;

@@ -1,10 +1,21 @@
-const express = require("express");
-const routes = require("./Config/routes");
+const getAllAccounts = async (db) => {
+  const collection = db.collection("accounts");
+  const result = await collection.find({}).toArray();
+  return result;
+};
 
-const app = express();
+const addAccount = async (db, account) => {
+  const collection = db.collection("accounts");
+  const result = await collection.insertOne(account);
+  return result;
+};
 
-app.use(express.json());
+const deleteAccount = async (db, id) => {
+  const collection = db.collection("accounts");
+  const result = await collection.deleteOne(id);
+  return result;
+};
 
-routes(app);
-
-module.exports = app;
+module.exports.getAllAccounts = getAllAccounts;
+module.exports.addAccount = addAccount;
+module.exports.deleteAccount = deleteAccount;
