@@ -12,7 +12,7 @@ const addAccount = async (db, account) => {
 
 const deleteAccount = async (db, id) => {
   const collection = db.collection("accounts");
-  const result = await collection.deleteOne(id);
+  const result = await collection.deleteOne({ _id: id });
   return result;
 };
 

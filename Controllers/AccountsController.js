@@ -32,12 +32,12 @@ const addAccount = (req, res) => {
 };
 
 const deleteAccount = (req, res) => {
-  const accountId = ObjectId(req.params.id);
+  const id = ObjectId(req.params.id);
 
   DbService.connectToDb(async (db) => {
-    const result = await Accounts.deleteAccount(db, accountId);
+    const result = await Accounts.deleteAccount(db, id);
 
-    return res.send(success());
+    res.send("deleted");
   });
 };
 
