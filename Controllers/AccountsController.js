@@ -12,6 +12,14 @@ const getAllAccounts = (req, res) => {
   });
 };
 
+const getAccount = (req, res) => {
+  const id = ObjectId(req.params.id);
+  DbService.connectToDb(async (db) => {
+    const account = await Accounts.getAccount(db, id);
+    res.json(account);
+  });
+};
+
 const addAccount = (req, res) => {
   const account = {
     name: req.body.name,
@@ -42,5 +50,6 @@ const deleteAccount = (req, res) => {
 };
 
 module.exports.getAllAccounts = getAllAccounts;
+module.exports.getAccount = getAccount;
 module.exports.addAccount = addAccount;
 module.exports.deleteAccount = deleteAccount;

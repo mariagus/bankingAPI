@@ -4,6 +4,12 @@ const getAllAccounts = async (db) => {
   return result;
 };
 
+const getAccount = async (db, id) => {
+  const collection = db.collection("accounts");
+  const result = await collection.find({ _id: id }).toArray();
+  return result;
+};
+
 const addAccount = async (db, account) => {
   const collection = db.collection("accounts");
   const result = await collection.insertOne(account);
@@ -17,5 +23,6 @@ const deleteAccount = async (db, id) => {
 };
 
 module.exports.getAllAccounts = getAllAccounts;
+module.exports.getAccount = getAccount;
 module.exports.addAccount = addAccount;
 module.exports.deleteAccount = deleteAccount;
