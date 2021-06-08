@@ -7,45 +7,6 @@ routes(app);
 
 module.exports = app;
 
-// app.get("/accounts", (req, res) => {
-//   connectToDb(async (db) => {
-//     const collection = db.collection("accounts");
-//     const data = await collection.find({}).toArray();
-//     res.json(data);
-//   });
-// });
-// //get individual account
-// app.get("/accounts/:id", (req, res) => {
-//   const idToFind = ObjectId(req.params.id);
-//   connectToDb(async (db) => {
-//     const collection = db.collection("accounts");
-//     const data = await collection.find({ _id: idToFind }).toArray();
-//     res.json(data);
-//   });
-// });
-// //create new account
-// app.post("/accounts", (req, res) => {
-//   const newAccount = {
-//     name: req.body.name,
-//     balance: round(req.body.balance, 2),
-//   };
-//   if (!newAccount.name || !newAccount.balance) {
-//     return res.send("fail!");
-//   }
-//   connectToDb(async (db) => {
-//     const collection = db.collection("accounts");
-//     const result = await collection.insertOne(newAccount);
-
-//     if (result.insertedCount === 1) {
-//       return res.send({
-//         success: true,
-//         message: "new account saved",
-//         status: 200,
-//         data: newAccount,
-//       });
-//     }
-//   });
-// });
 // //deposit to account
 // app.put("/accounts/:id/deposit", (req, res) => {
 //   const idToFind = ObjectId(req.params.id);

@@ -14,9 +14,24 @@ const getAllAccounts = (req, res) => {
 
 const getAccount = (req, res) => {
   const id = ObjectId(req.params.id);
+  if (id.length !== 12) {
+    return res.send("invalid ID");
+  }
   DbService.connectToDb(async (db) => {
     const account = await Accounts.getAccount(db, id);
-    res.json(account);
+    if (account.length == 0) {
+      return res.send("Woops");
+    }
+    return res.json(account);
+  });
+};
+
+const deposit = (req, res) => {
+  const id = ObjectId(req.params.id);
+  const amount = req.body.amount;
+  DbService.connectToDb(async (db) => {
+    const account = await Accounts.deposit(db, id, amount);
+    account.insertedCount === 1 ? res.send(success()) : res.send(failed());
   });
 };
 
@@ -30,12 +45,7 @@ const addAccount = (req, res) => {
   }
   DbService.connectToDb(async (db) => {
     const result = await Accounts.addAccount(db, account);
-
-    if (result.insertedCount === 1) {
-      return res.send(success());
-    } else {
-      return res.send(failed());
-    }
+    result.insertedCount === 1 ? res.send(success()) : res.send(failed());
   });
 };
 
@@ -52,4 +62,5 @@ const deleteAccount = (req, res) => {
 module.exports.getAllAccounts = getAllAccounts;
 module.exports.getAccount = getAccount;
 module.exports.addAccount = addAccount;
+module.exports.deposit = deposit;
 module.exports.deleteAccount = deleteAccount;
