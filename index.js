@@ -7,43 +7,6 @@ routes(app);
 
 module.exports = app;
 
-// //deposit to account
-// app.put("/accounts/:id/deposit", (req, res) => {
-//   const idToFind = ObjectId(req.params.id);
-//   const amount = req.body.amount;
-
-//   connectToDb(async (db) => {
-//     const collection = db.collection("accounts");
-//     const result = await collection.updateOne(
-//       { _id: idToFind },
-//       { $inc: { balance: round(amount, 2) } }
-//     );
-//     if (result.modifiedCount === 1) {
-//       return res.send("done");
-//     } else {
-//       return res.send("fail");
-//     }
-//   });
-// });
-// //withdraw from account
-// app.put("/accounts/:id/withdraw", (req, res) => {
-//   const idToFind = ObjectId(req.params.id);
-//   const amount = req.body.amount;
-
-//   connectToDb(async (db) => {
-//     const collection = db.collection("accounts");
-//     const result = await collection.updateOne(
-//       { _id: idToFind },
-//       { $inc: { balance: round(-amount, 2) } }
-//     );
-//     if (result.modifiedCount === 1) {
-//       return res.send("done");
-//     } else {
-//       return res.send("fail");
-//     }
-//   });
-// });
-
 // app.put("/accounts/transfer/:id1/:id2", (req, res) => {
 //   const idAcctOrigin = ObjectId(req.params.id1);
 //   const idAcctDestination = ObjectId(req.params.id2);

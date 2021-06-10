@@ -14,7 +14,7 @@ const getAllAccounts = (req, res) => {
 
 const getAccount = (req, res) => {
   const id = ObjectId(req.params.id);
-  if (id.length !== 12) {
+  if (req.params.id.length !== 24) {
     return res.send("invalid ID");
   }
   DbService.connectToDb(async (db) => {
@@ -27,11 +27,25 @@ const getAccount = (req, res) => {
 };
 
 const deposit = (req, res) => {
-  const id = ObjectId(req.params.id);
+  const id = ObjectId(req.body.id);
   const amount = req.body.amount;
+
   DbService.connectToDb(async (db) => {
     const account = await Accounts.deposit(db, id, amount);
-    account.insertedCount === 1 ? res.send(success()) : res.send(failed());
+    return account.modifiedCount === 1
+      ? res.send(success())
+      : res.send(failed());
+  });
+};
+
+const withdraw = (req, res) => {
+  const id = ObjectId(req.body.id);
+  const amount = req.body.amount;
+  DbService.connectToDb(async (db) => {
+    const account = await Accounts.withdraw(db, id, amount);
+    return account.modifiedCount === 1
+      ? res.send(success())
+      : res.send(failed());
   });
 };
 
@@ -41,11 +55,20 @@ const addAccount = (req, res) => {
     balance: req.body.balance,
   };
   if (!account.name || !account.balance) {
-    return res.send(failed());
+    return res.send("invalid account information");
   }
   DbService.connectToDb(async (db) => {
     const result = await Accounts.addAccount(db, account);
     result.insertedCount === 1 ? res.send(success()) : res.send(failed());
+  });
+};
+const transfer = (req, res) => {
+  const id1 = ObjectId(req.body.id1);
+  const id2 = ObjectId(req.body.id2);
+  const amount = req.body.amount;
+  DbService.connectToDb(async (db) => {
+    const result = await Accounts.transfer(db, amount, id1, id2);
+    result.modifiedCount > 0 ? res.send(success()) : res.send(failed());
   });
 };
 
@@ -54,8 +77,8 @@ const deleteAccount = (req, res) => {
 
   DbService.connectToDb(async (db) => {
     const result = await Accounts.deleteAccount(db, id);
-
-    res.send("deleted");
+    res.redirect("/accounts");
+    return result;
   });
 };
 
@@ -63,4 +86,6 @@ module.exports.getAllAccounts = getAllAccounts;
 module.exports.getAccount = getAccount;
 module.exports.addAccount = addAccount;
 module.exports.deposit = deposit;
+module.exports.withdraw = withdraw;
+module.exports.transfer = transfer;
 module.exports.deleteAccount = deleteAccount;
