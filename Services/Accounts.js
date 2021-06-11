@@ -36,6 +36,10 @@ const withdraw = async (db, id, amount) => {
 
 const transfer = async (db, amount, id1, id2) => {
   const collection = db.collection("accounts");
+  const data = await collection.find({ _id: id1 }).toArray();
+  if (data[0].balance < amount) {
+    return data;
+  }
   const result1 = await collection.updateOne(
     { _id: id1 },
     { $inc: { balance: -amount } }

@@ -62,6 +62,7 @@ const addAccount = (req, res) => {
     result.insertedCount === 1 ? res.send(success()) : res.send(failed());
   });
 };
+
 const transfer = (req, res) => {
   const id1 = ObjectId(req.body.id1);
   const id2 = ObjectId(req.body.id2);
