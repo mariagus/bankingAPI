@@ -20,7 +20,7 @@ const getAccount = (req, res) => {
   DbService.connectToDb(async (db) => {
     const account = await Accounts.getAccount(db, id);
     if (account.length == 0) {
-      return res.send("Woops");
+      return res.send("Oops");
     }
     return res.json(account);
   });
@@ -78,8 +78,9 @@ const deleteAccount = (req, res) => {
 
   DbService.connectToDb(async (db) => {
     const result = await Accounts.deleteAccount(db, id);
-    res.redirect("/accounts");
-    return result;
+    result.deletedCount === 1
+      ? res.send({ message: "Account deleted" })
+      : res.send({ message: "Invalid account ID" });
   });
 };
 
