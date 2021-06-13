@@ -52,7 +52,7 @@ const withdraw = (req, res) => {
 const addAccount = (req, res) => {
   const account = {
     name: req.body.name,
-    balance: req.body.balance,
+    balance: parseInt(req.body.balance),
   };
   if (!account.name || !account.balance) {
     return res.send("invalid account information");
